@@ -118,3 +118,44 @@ select  (Case  when g.grade >= 8 then s.name else null end), g.grade , s.marks f
 where s.marks>=g.min_mark and s.marks<=g.max_mark
 order by g.grade desc, s.name, s.marks
 
+
+
+Julia just finished conducting a coding contest, and she needs your help assembling the leaderboard! 
+Write a query to print the respective hacker_id and name of hackers who achieved full scores for more than one challenge. 
+Order your output in descending order by the total number of challenges in which the hacker earned a full score. 
+
+select h.hacker_id , h.name  from hackers h, Challenges c, Difficulty d, Submissions s
+where h.hacker_id=s.hacker_id
+and c.difficulty_level=d.difficulty_level
+and s.score=d.score
+and c.challenge_id=s.challenge_id
+GROUP BY h.hacker_id , h.name
+having count(h.hacker_id)>1
+order by count(s.challenge_id) desc, s.hacker_id asc
+
+
+Julia asked her students to create some coding challenges. Write a query to print the hacker_id, name, 
+and the total number of challenges created by each student. Sort your results by the total number of challenges in descending order. 
+If more than one student created the same number of challenges, then sort the result by hacker_id. 
+If more than one student created the same number of challenges and the count is less than the maximum number of challenges created, 
+then exclude those students from the result.
+
+Challenges: The challenge_id is the id of the challenge, and hacker_id is the id of the student who created the challenge.
+Hackers: The hacker_id is the id of the hacker, and name is the name of the hacker.
+
+
+select c.hacker_id, h.name ,count(c.hacker_id) as c_count
+from Hackers as h inner join Challenges as c on c.hacker_id = h.hacker_id
+group by c.hacker_id, h.name
+having c_count = (SELECT MAX(temp1.cnt)
+        from (SELECT COUNT(hacker_id) as cnt from Challenges group by hacker_id
+             order by hacker_id) temp1)
+    or c_count in 
+        (select t.cnt
+         from (select count(*) as cnt 
+               from challenges
+               group by hacker_id) t
+         group by t.cnt
+         having count(t.cnt) = 1)
+order by c_count DESC, c.hacker_id
+If more than one hacker received full scores in same number of challenges, then sort them by ascending hacker_id.
