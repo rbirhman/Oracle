@@ -176,3 +176,30 @@ and coins_needed=(select min(coins_needed) from wands
 where code=w.code and power=w.power)
 group by w.id, wp.age, w.coins_needed, w.power
 order by w.power desc,wp.age desc 
+
+
+P(R) represents a pattern drawn by Julia in R rows. The following pattern represents P(5): Write a query to print the pattern P(20).
+set @NUMBER:=21; SELECT REPEAT('* ', @NUMBER := @NUMBER - 1) FROM information_schema.tables;
+
+* 
+* * 
+* * * 
+* * * * 
+* * * * * 
+* * * * * * 
+* * * * * * * 
+* * * * * * * * 
+* * * * * * * * * 
+* * * * * * * * * * 
+* * * * * * * * * * * 
+* * * * * * * * * * * * 
+* * * * * * * * * * * * * 
+* * * * * * * * * * * * * * 
+* * * * * * * * * * * * * * * 
+* * * * * * * * * * * * * * * * 
+* * * * * * * * * * * * * * * * * 
+* * * * * * * * * * * * * * * * * * 
+* * * * * * * * * * * * * * * * * * * 
+* * * * * * * * * * * * * * * * * * * *
+
+set @NUMBER:=0; SELECT REPEAT('* ', @NUMBER := @NUMBER + 1) FROM information_schema.tables limit 20;
